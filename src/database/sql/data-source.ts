@@ -15,15 +15,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: [
-    `./${
-      process.env.NODE_ENV == 'production' ? 'dist' : 'src'
-    }/database/sql/entities/*.entity.{js,ts}`
-  ],
-  migrations: [
-    `./${
-      process.env.NODE_ENV == 'production' ? 'dist' : 'src'
-    }/database/sql/migrations/*`
-  ],
+  entities: [`./${process.env.NODE_ENV == 'production' ? 'dist' : 'src'}/database/sql/entities/*.entity.{js,ts}`],
+  migrations: [`./${process.env.NODE_ENV == 'production' ? 'dist' : 'src'}/database/sql/migrations/*`],
   namingStrategy: new SnakeNamingStrategy()
 } as DataSourceOptions);

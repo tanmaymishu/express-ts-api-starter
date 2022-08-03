@@ -16,16 +16,13 @@ export default class AuthServiceProvider extends ServiceProvider {
       passwordField: 'password'
     };
     const LocalStrategy = PassportLocal.Strategy;
-    const localStrategy = new LocalStrategy(
-      customFields,
-      async (username, password, done) => {
-        const user = await User.findOneBy({ email: username });
-        if (user && bcrypt.compareSync(password, user.password)) {
-          return done(null, user);
-        }
-        return done(null, false);
+    const localStrategy = new LocalStrategy(customFields, async (username, password, done) => {
+      const user = await User.findOneBy({ email: username });
+      if (user && bcrypt.compareSync(password, user.password)) {
+        return done(null, user);
       }
-    );
+      return done(null, false);
+    });
 
     passport.use(localStrategy);
 
