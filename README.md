@@ -19,7 +19,7 @@
 
 ### 🏁 Getting Started:
 
-- [Generate a project](https://github.com/tanmaymishu/nodejs-starter-ts/generate) based on this template.
+- [Generate a project](https://github.com/tanmaymishu/express-ts-api-starter/generate) based on this template.
 - Create two postgres or mysql databases: `express_ts` and `express_ts_test`
 - Clone the newly created repo and `cd` into the directory.
 - Change the DB credentials accordingly in the `.env.example` and `.env.test` files. In the next step, a `.env` file will be generated based on these changes.
@@ -49,7 +49,7 @@ The project ships with some docker configs and a `cli`. You can interact with th
 - If the certificate has been generated successfully, you will need to run `./cli post-ssl` to fetch the dhparam key file.
 - Adjust the production specific nginx configs in the `nginx.prod.conf` file.
 
-Do you have a significant feature in mind? [Create an issue](https://github.com/tanmaymishu/nodejs-starter-ts/issues/new) or [send a pull request](https://github.com/tanmaymishu/nodejs-starter-ts/pulls).
+Do you have a significant feature in mind? [Create an issue](https://github.com/tanmaymishu/express-ts-api-starter/issues/new) or [send a pull request](https://github.com/tanmaymishu/express-ts-api-starter/pulls).
 
 ### 📝 Notes:
 
