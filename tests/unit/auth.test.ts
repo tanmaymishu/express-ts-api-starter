@@ -11,7 +11,9 @@ describe('auth', () => {
       user.email = 'john@example.com';
       user.password = 'password';
       user.id = 1;
-      expect(Container.get(AuthService).generateJwt(user)).toBeDefined();
+      const jwt = Container.get(AuthService).generateJwt(user);
+      console.log(jwt);
+      expect(jwt).toBeDefined();
     });
   });
 });

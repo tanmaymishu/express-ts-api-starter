@@ -54,13 +54,13 @@ export default class AuthService {
     return jwt.sign(
       {
         sub: user.id,
-        iat: Date.now(),
+        iat: Math.floor(Date.now() / 1000),
         iss: 'api.example.com',
         aud: 'app.example.com'
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: 604800
+        expiresIn: '7d'
       }
     );
   }

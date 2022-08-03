@@ -14,8 +14,8 @@
     "fmt": "prettier --config .prettierrc 'src/**/*.ts' 'tests/**/*.ts' --write",
     "entity:make": "cd src/database/sql/entities/ && typeorm-ts-node-commonjs entity:create",
     "migrate:make": "cd src/database/sql/migrations/ && typeorm-ts-node-commonjs migration:create",
-    "migrate": "NODE_ENV=development typeorm-ts-node-commonjs migration:run -d src/database/sql/data-source.ts",
-    "migrate:rollback": "NODE_ENV=development typeorm-ts-node-commonjs migration:revert -d src/database/sql/data-source.ts"
+    "migrate": "export NODE_ENV=development && typeorm-ts-node-commonjs migration:run -d src/database/sql/data-source.ts",
+    "migrate:rollback": "export NODE_ENV=development && typeorm-ts-node-commonjs migration:revert -d src/database/sql/data-source.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
