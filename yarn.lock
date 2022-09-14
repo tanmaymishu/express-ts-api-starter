@@ -290,29 +290,29 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bull-board/api@3.11.1":
-  version "3.11.1"
-  resolved "https://registry.yarnpkg.com/@bull-board/api/-/api-3.11.1.tgz#98b2c9556f643718bb5bde4a1306e6706af8192e"
-  integrity sha512-ElwX7sM+Ng4ZL9KUsbDubRE+r2hu/gss85OsROeE9bmyfkW14jOJkgr5MKUyjTTgPEeMs1Mw55TgQs2vxoWBiA==
+"@bull-board/api@4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@bull-board/api/-/api-4.3.1.tgz#dbb20b7152ac6880250dfc0e8cb00d0bdba5068b"
+  integrity sha512-rkWaUdvQOEkDrfJAK+XgWRhB8w8xo0mAjGfVmCBhE4ehYC2yTkRWIBwNx68YM1rvQcFF/BZnDtcYkg1g9OwWhw==
   dependencies:
     redis-info "^3.0.8"
 
-"@bull-board/express@^3.3.0":
-  version "3.11.1"
-  resolved "https://registry.yarnpkg.com/@bull-board/express/-/express-3.11.1.tgz#f1285fbc54a5ccdc0028b63ec87a91ac9de878a6"
-  integrity sha512-+a5IQilu/CxvnGC0z6oJPANn7eF/Q61VU86JR9vRtmaY96mKKny0NuAyulJ2/Y9JznMCBOLUsXWL6fm9zD9kJw==
+"@bull-board/express@^4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@bull-board/express/-/express-4.3.1.tgz#4185830caf71f5bf1eb066a99b7d8343b704cde2"
+  integrity sha512-F70Yfv2xHbOfoSZ4Rwcj6mzEF4bALR3VdhkKDtf1dZuT6B18pGdzFsR5ETbuouBAdMRx2g0i8LG1buA7mhcotg==
   dependencies:
-    "@bull-board/api" "3.11.1"
-    "@bull-board/ui" "3.11.1"
+    "@bull-board/api" "4.3.1"
+    "@bull-board/ui" "4.3.1"
     ejs "3.1.7"
     express "4.17.3"
 
-"@bull-board/ui@3.11.1":
-  version "3.11.1"
-  resolved "https://registry.yarnpkg.com/@bull-board/ui/-/ui-3.11.1.tgz#17a2af5573f31811a543105b9a96249c95e93ce7"
-  integrity sha512-SRrfvxHF/WaBICiAFuWAoAlTvoBYUBmX94oRbSKzVILRFZMe3gs0hN071BFohrn4yOTFHAkWPN7cjMbaqHwCag==
+"@bull-board/ui@4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@bull-board/ui/-/ui-4.3.1.tgz#7f37bba6299bdf4e68a583d438ff5447beb8e705"
+  integrity sha512-BeWSCm1u05MDjuN6b98rX8XRepLEek2xmrl5UGpoMYN0NjjQiJHsS78gw3mjTyMy59LrX8EbZ7RD363OxvLPog==
   dependencies:
-    "@bull-board/api" "3.11.1"
+    "@bull-board/api" "4.3.1"
 
 "@colors/colors@1.5.0":
   version "1.5.0"
