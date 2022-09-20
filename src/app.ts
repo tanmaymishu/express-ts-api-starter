@@ -1,11 +1,11 @@
 import dotenv from 'dotenv';
+import 'reflect-metadata';
 
 if (process.env.NODE_ENV == 'test') {
   dotenv.config({ path: '.env.test' });
 } else {
   dotenv.config();
 }
-import 'reflect-metadata';
 import { useContainer, useExpressServer } from 'routing-controllers';
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
@@ -14,13 +14,9 @@ import '@/util/helpers';
 import multer from 'multer';
 import morganLogger from '@/middleware/morgan.middleware';
 
-import { ExpressAdapter } from '@bull-board/express';
-import { createBullBoard } from '@bull-board/api';
-import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
-import { mailQueue } from '@/queues/mail';
 import path from 'path';
 
-import IORedis from 'ioredis';
+import { createClient } from 'redis';
 import connectRedis from 'connect-redis';
 import session from 'express-session';
 import passport from 'passport';
@@ -29,14 +25,30 @@ import AppServiceProvider from '@/providers/app-service.provider';
 import AuthServiceProvider from '@/providers/auth-service.provider';
 import DatabaseServiceProvider from '@/providers/database-service.provider';
 
-const providers = [AppServiceProvider, DatabaseServiceProvider, AuthServiceProvider];
-providers.forEach((provider) => new provider().register());
-
-const redisClient = new IORedis(parseInt(<string>process.env.REDIS_PORT), process.env.REDIS_HOST);
-const RedisStore = connectRedis(session);
-
 // Create an express app.
 const app = express();
+
+const providers = [AppServiceProvider, DatabaseServiceProvider, AuthServiceProvider];
+providers.forEach((provider) => new provider().register());
+const redisClient = createClient({
+  legacyMode: true,
+  socket: {
+    host: process.env.REDIS_HOST,
+    port: parseInt(process.env.REDIS_PORT || '6379')
+  }
+});
+
+redisClient.on('error', function (err) {
+  // console.log('Could not establish a connection with redis. ' + err);
+});
+
+redisClient.on('connect', function (err) {
+  // console.log('Connected to redis successfully');
+});
+
+redisClient.connect().then().catch(console.error);
+
+const RedisStore = connectRedis(session);
 
 // Make req.cookies accessible
 app.use(cookieParser());
@@ -44,7 +56,7 @@ app.use(cookieParser());
 //Configure session middleware
 app.use(
   session({
-    store: new RedisStore({ client: redisClient }),
+    store: new RedisStore({ client: redisClient } as any),
     secret: process.env.JWT_SECRET as string,
     resave: false,
     saveUninitialized: false,
@@ -74,21 +86,6 @@ app.use(morganLogger);
 app.get('/', (req, res, next) => {
   return res.json({ message: 'Home, Sweet Home.' });
 });
-
-// Set up queue monitoring route.
-const serverAdapter = new ExpressAdapter();
-
-const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
-  queues: [new BullMQAdapter(mailQueue)],
-  serverAdapter: serverAdapter
-});
-
-serverAdapter.setBasePath('/admin/queues');
-app.use('/admin/queues', serverAdapter.getRouter());
-
-// Add views
-app.set('views', path.join(__dirname, './views'));
-app.set('view engine', 'ejs');
 
 // Serve static files
 app.use(express.static(path.join(__dirname, '../public')));

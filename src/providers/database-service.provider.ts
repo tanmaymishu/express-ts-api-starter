@@ -6,11 +6,11 @@ export default class DatabaseServiceProvider extends ServiceProvider {
   async register() {
     AppDataSource.initialize()
       .then(() => {
-        console.log('Data Source has been initialized!');
+        // console.log('Connected to database successfully');
       })
       .catch((err) => {
         console.error(
-          'Error during Data Source initialization. Please make sure you have created the database defined in the .env file.',
+          'Error connecting database. Please make sure you have created the database defined in the .env file.',
           err
         );
       });
