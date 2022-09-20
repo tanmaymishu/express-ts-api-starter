@@ -87,21 +87,6 @@ app.get('/', (req, res, next) => {
   return res.json({ message: 'Home, Sweet Home.' });
 });
 
-// Set up queue monitoring route.
-// const serverAdapter = new ExpressAdapter();
-
-// const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
-//   queues: [new BullMQAdapter(mailQueue)],
-//   serverAdapter: serverAdapter
-// });
-
-// serverAdapter.setBasePath('/admin/queues');
-// app.use('/admin/queues', serverAdapter.getRouter());
-
-// // Add views
-// app.set('views', path.join(__dirname, './views'));
-// app.set('view engine', 'ejs');
-
 // Serve static files
 app.use(express.static(path.join(__dirname, '../public')));
 useContainer(Container);
