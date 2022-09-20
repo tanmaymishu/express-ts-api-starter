@@ -39,12 +39,15 @@ const redisClient = createClient({
 });
 
 redisClient.on('error', function (err) {
-  console.log('Could not establish a connection with redis. ' + err);
+  // console.log('Could not establish a connection with redis. ' + err);
 });
+
 redisClient.on('connect', function (err) {
-  console.log('Connected to redis successfully');
+  // console.log('Connected to redis successfully');
 });
+
 redisClient.connect().then().catch(console.error);
+
 const RedisStore = connectRedis(session);
 
 // Make req.cookies accessible
