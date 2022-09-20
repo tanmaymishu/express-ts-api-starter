@@ -12,7 +12,6 @@ describe('auth', () => {
       user.password = 'password';
       user.id = 1;
       const jwt = Container.get(AuthService).generateJwt(user);
-      console.log(jwt);
       expect(jwt).toBeDefined();
     });
   });

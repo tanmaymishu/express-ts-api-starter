@@ -1,0 +1,20 @@
+{
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "tsx": false,
+      "decorators": true,
+      "topLevelAwait": true
+    },
+    "transform": {
+      "legacyDecorator": true,
+      "decoratorMetadata": true
+    },
+    "target": "es2018",
+    "keepClassNames": true
+  },
+  "module": {
+    "type": "commonjs",
+    "noInterop": false
+  }
+}
