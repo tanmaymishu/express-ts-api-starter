@@ -24,6 +24,10 @@ import Container from 'typedi';
 import AppServiceProvider from '@/providers/app-service.provider';
 import AuthServiceProvider from '@/providers/auth-service.provider';
 import DatabaseServiceProvider from '@/providers/database-service.provider';
+import { ExpressAdapter } from '@bull-board/express';
+import { createBullBoard } from '@bull-board/api';
+import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
+import { mailQueue } from '@/queues/mail';
 
 // Create an express app.
 const app = express();
@@ -87,8 +91,20 @@ app.get('/', (req, res, next) => {
   return res.json({ message: 'Home, Sweet Home.' });
 });
 
+// Set up queue monitoring route.
+const serverAdapter = new ExpressAdapter();
+
+const { addQueue, removeQueue, setQueues, replaceQueues } = createBullBoard({
+  queues: [new BullMQAdapter(mailQueue)],
+  serverAdapter: serverAdapter
+});
+
+serverAdapter.setBasePath('/admin/queues');
+app.use('/admin/queues', serverAdapter.getRouter());
+
 // Serve static files
 app.use(express.static(path.join(__dirname, '../public')));
+
 useContainer(Container);
 
 useExpressServer(app, {
