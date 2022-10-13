@@ -50,7 +50,7 @@
     "typescript": "4.5.2"
   },
   "dependencies": {
-    "@bull-board/express": "^3.3.0",
+    "@bull-board/express": "^4.5.0",
     "bcrypt": "^5.0.1",
     "bullmq": "^1.37.1",
     "class-transformer": "^0.5.1",
