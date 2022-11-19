@@ -6,16 +6,12 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "if [ -e .env ]; then echo \".env exists\"; else echo \".env not found, copying .env.example\"; cp .env.example .env;  fi && npm run migrate",
-    "typeorm": "typeorm-ts-node-commonjs",
     "build": "tsc",
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
     "test": "export NODE_ENV=test && jest",
     "start": "tsc && export NODE_ENV=production && export NODE_OPTIONS=--enable-source-maps && TS_NODE_BASEURL=./dist node -r tsconfig-paths/register dist/index.js",
     "fmt": "prettier --config .prettierrc 'src/**/*.ts' 'tests/**/*.ts' --write",
-    "entity:make": "cd src/database/sql/entities/ && typeorm-ts-node-commonjs entity:create",
-    "migrate:make": "cd src/database/sql/migrations/ && typeorm-ts-node-commonjs migration:create",
-    "migrate": "export NODE_ENV=development && typeorm-ts-node-commonjs migration:run -d src/database/sql/data-source.ts",
-    "migrate:rollback": "export NODE_ENV=development && typeorm-ts-node-commonjs migration:revert -d src/database/sql/data-source.ts"
+    "mikro-orm": "npx mikro-orm"
   },
   "devDependencies": {
     "@swc/core": "^1.3.2",
@@ -51,6 +47,10 @@
   },
   "dependencies": {
     "@bull-board/express": "^3.3.0",
+    "@mikro-orm/cli": "^5.5.3",
+    "@mikro-orm/core": "^5.5.3",
+    "@mikro-orm/migrations": "^5.5.3",
+    "@mikro-orm/postgresql": "^5.5.3",
     "bcrypt": "^5.0.1",
     "bullmq": "^1.37.1",
     "class-transformer": "^0.5.1",
@@ -79,8 +79,13 @@
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.9.0",
     "typedi": "^0.10.0",
-    "typeorm": "^0.3.6",
-    "typeorm-naming-strategies": "^4.1.0",
     "winston": "^3.3.3"
+  },
+  "mikro-orm": {
+    "useTsNode": true,
+    "configPaths": [
+      "./src/mikro-orm.config.ts",
+      "./dist/mikro-orm.config.js"
+    ]
   }
 }

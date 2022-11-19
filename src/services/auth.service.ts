@@ -1,21 +1,24 @@
+import { MikroORM, UseRequestContext } from '@mikro-orm/core';
 import { User } from '../database/sql/entities/user.entity';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { mailQueue } from '../queues/mail';
-import SendWelcomeEmail from '../jobs/send-welcome-email';
 import { Request } from 'express';
-import { Service } from 'typedi';
-import { AppDataSource } from '../database/sql/data-source';
+import { Service, Container } from 'typedi';
 @Service()
 export default class AuthService {
+  constructor(private readonly orm: MikroORM) {}
+
+  @UseRequestContext()
+  async findBy(criteria: Record<string, string>) {}
+  @UseRequestContext()
   async createUser(body: any) {
-    let userRepo = AppDataSource.getRepository(User);
+    let em = this.orm.em;
     let user = new User();
     user.firstName = body.firstName;
     user.lastName = body.lastName;
     user.email = body.email;
     user.password = bcrypt.hashSync(body.password, 10);
-    userRepo.insert(user);
+    em.persistAndFlush(user);
     return {
       firstName: user.firstName,
       lastName: user.lastName,
@@ -32,8 +35,10 @@ export default class AuthService {
     return user;
   }
 
+  @UseRequestContext()
   async login(req: Request) {
-    const user = await User.findOneBy({ email: req.body.email });
+    let em = this.orm.em;
+    const user = await em.findOne(User, { email: req.body.email });
 
     if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
       throw new Error('User not found');

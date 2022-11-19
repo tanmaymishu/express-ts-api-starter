@@ -1,3 +1,5 @@
+import { MikroORM } from '@mikro-orm/postgresql';
+import { Container, Inject, Service } from 'typedi';
 import ServiceProvider from './service-provider';
 import PassportJWT from 'passport-jwt';
 import PassportLocal from 'passport-local';
@@ -6,7 +8,8 @@ import bcrypt from 'bcrypt';
 import { Request } from 'express';
 import { User } from '../database/sql/entities/user.entity';
 
-export default class AuthServiceProvider extends ServiceProvider {
+@Service()
+export default class AuthServiceProvider implements ServiceProvider {
   async register() {
     const JwtStrategy = PassportJWT.Strategy;
     // ExtractJwt = PassportJWT.ExtractJwt;
@@ -17,7 +20,8 @@ export default class AuthServiceProvider extends ServiceProvider {
     };
     const LocalStrategy = PassportLocal.Strategy;
     const localStrategy = new LocalStrategy(customFields, async (username, password, done) => {
-      const user = await User.findOneBy({ email: username });
+      const orm = Container.get(MikroORM);
+      const user = await orm.em.findOneOrFail(User, { email: username });
       if (user && bcrypt.compareSync(password, user.password)) {
         return done(null, user);
       }
@@ -37,11 +41,13 @@ export default class AuthServiceProvider extends ServiceProvider {
       issuer: 'api.example.com',
       audience: 'app.example.com'
     };
-    const jwtStrategy = new JwtStrategy(opts, async function (payload, done) {
+    const jwtStrategy = new JwtStrategy(opts, async (payload, done) => {
       if (Date.now() > payload.exp) {
         return done(null, false);
       }
-      const user = await User.findOneBy({ id: payload.sub });
+      const orm = Container.get(MikroORM);
+      const user = await orm.em.findOneOrFail(User, { id: payload.sub });
+
       if (user) {
         return done(null, user);
       }
@@ -54,13 +60,18 @@ export default class AuthServiceProvider extends ServiceProvider {
       done(null, user.id);
     });
 
-    passport.deserializeUser(async function (id: any, done) {
-      const user = await User.findOneBy({ id });
+    passport.deserializeUser(async (id: any, done) => {
+      const orm = Container.get(MikroORM);
+      const user = await orm.em.findOneOrFail(User, { id });
       if (user) {
         done(null, user);
       } else {
         done(new Error('User not found'));
       }
     });
+  }
+
+  async boot() {
+    // TODO: Implement Method
   }
 }

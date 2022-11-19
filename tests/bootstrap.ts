@@ -1,21 +1,15 @@
 import '../src/util/helpers';
 import AuthService from '../src/services/auth.service';
 import Container from 'typedi';
-import { AppDataSource } from '../src/database/sql/data-source';
-
-export async function initDB() {
-  // (async () => {
-  const connection = await AppDataSource.initialize();
-  await connection.undoLastMigration();
-  await connection.runMigrations({
-    transaction: 'none'
-  });
-  // await connection.destroy();
-  // })();
-}
+import orm from '../src/database/sql/data-source';
 
 export async function refreshDB() {
-  await initDB();
+  let mikroOrm = await orm();
+  await mikroOrm.getSchemaGenerator().refreshDatabase();
+}
+
+export async function closeDB() {
+  (await orm()).close();
 }
 
 export async function initUser() {
@@ -25,4 +19,10 @@ export async function initUser() {
     email: 'john@example.com',
     password: 'password'
   });
+}
+
+export async function loadProviders(providers: any) {
+  for await (const provider of providers) {
+    await new provider().register();
+  }
 }

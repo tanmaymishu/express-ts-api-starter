@@ -1,13 +1,16 @@
 import request from 'supertest';
-import Container from 'typedi';
 import app from '../../src/app';
-import { refreshDB, initUser } from '../bootstrap';
+import { refreshDB, closeDB, initUser } from '../bootstrap';
 
 describe('Ping', () => {
   let user: any;
   beforeEach(async () => {
     await refreshDB();
     user = await initUser();
+  });
+
+  afterAll(async () => {
+    await closeDB();
   });
 
   describe('GET /ping', () => {

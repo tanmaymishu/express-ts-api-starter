@@ -1,34 +1,27 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BaseEntity } from 'typeorm';
+import { Entity, Property, PrimaryKey } from '@mikro-orm/core';
 
-@Entity('users')
-export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
+@Entity({ tableName: 'users' })
+export class User {
+  @PrimaryKey()
   id!: number;
 
-  @Column()
+  @Property()
   firstName!: string;
 
-  @Column()
+  @Property()
   lastName!: string;
 
-  @Column({
+  @Property({
     unique: true
   })
   email!: string;
 
-  @Column()
+  @Property()
   password!: string;
 
-  @CreateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)'
-  })
-  createdAt!: Date;
+  @Property()
+  createdAt: Date = new Date();
 
-  @UpdateDateColumn({
-    type: 'timestamp',
-    default: () => 'CURRENT_TIMESTAMP(6)',
-    onUpdate: 'CURRENT_TIMESTAMP(6)'
-  })
-  updatedAt!: Date;
+  @Property({ onUpdate: () => new Date() })
+  updatedAt: Date = new Date();
 }

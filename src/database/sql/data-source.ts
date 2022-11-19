@@ -1,21 +1,13 @@
-import dotenv from 'dotenv';
-import { DataSource, DataSourceOptions } from 'typeorm';
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-if (process.env.NODE_ENV == 'test') {
-  dotenv.config({ path: '.env.test' });
-} else {
-  dotenv.config({ path: '.env' });
-}
+import { PostgreSqlDriver } from '@mikro-orm/postgresql';
+import { MikroORM } from '@mikro-orm/core';
+import config from '@/mikro-orm.config';
+import Container from 'typedi';
 
-export const AppDataSource = new DataSource({
-  synchronize: false,
-  type: process.env.DB_CLIENT,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE,
-  entities: [`./${process.env.NODE_ENV == 'production' ? 'dist' : 'src'}/database/sql/entities/*.entity.{js,ts}`],
-  migrations: [`./${process.env.NODE_ENV == 'production' ? 'dist' : 'src'}/database/sql/migrations/*`],
-  namingStrategy: new SnakeNamingStrategy()
-} as DataSourceOptions);
+export default async function orm(): Promise<MikroORM> {
+  if (Container.has(MikroORM)) {
+    return Container.get(MikroORM);
+  }
+  let ormInstance = await MikroORM.init<PostgreSqlDriver>(config);
+  Container.set(MikroORM, ormInstance);
+  return ormInstance;
+}

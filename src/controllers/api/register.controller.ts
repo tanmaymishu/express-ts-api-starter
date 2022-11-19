@@ -1,8 +1,9 @@
+import { MikroORM } from '@mikro-orm/core';
 import { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Controller, Post, Req, Res, UseBefore } from 'routing-controllers';
 import { User } from '@/database/sql/entities/user.entity';
-import { Service } from 'typedi';
+import { Service, Container } from 'typedi';
 import validate from '@/middleware/validation.middleware';
 import AuthService from '@/services/auth.service';
 
@@ -21,7 +22,8 @@ export class RegisterController {
       .isEmail()
       .bail()
       .custom(async (value) => {
-        const user = await User.findOneBy({ email: value });
+        const orm = Container.get(MikroORM);
+        const user = await orm.em.findOne(User, { email: value });
         if (user) {
           return Promise.reject('Email has already been taken.');
         }

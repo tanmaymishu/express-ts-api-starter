@@ -1,3 +1,4 @@
+import orm from '@/database/sql/data-source';
 import dotenv from 'dotenv';
 import 'reflect-metadata';
 
@@ -28,6 +29,7 @@ import { ExpressAdapter } from '@bull-board/express';
 import { createBullBoard } from '@bull-board/api';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 import { mailQueue } from '@/queues/mail';
+import { RequestContext } from '@mikro-orm/core';
 
 // Create an express app.
 const app = express();
@@ -56,6 +58,10 @@ const RedisStore = connectRedis(session);
 
 // Make req.cookies accessible
 app.use(cookieParser());
+
+app.use(async (req, res, next) => {
+  RequestContext.create((await orm()).em, next);
+});
 
 //Configure session middleware
 app.use(
