@@ -11,7 +11,7 @@
     "test": "export NODE_ENV=test && jest",
     "start": "tsc && export NODE_ENV=production && export NODE_OPTIONS=--enable-source-maps && TS_NODE_BASEURL=./dist node -r tsconfig-paths/register dist/index.js",
     "fmt": "prettier --config .prettierrc 'src/**/*.ts' 'tests/**/*.ts' --write",
-    "lint": "yarn run eslint --ext .ts src/ tests/",
+    "lint": "npm run eslint --ext .ts src/ tests/",
     "mikro-orm": "npx mikro-orm"
   },
   "devDependencies": {
