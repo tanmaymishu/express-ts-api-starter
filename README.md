@@ -33,10 +33,7 @@
 - `npm run test`: Run all the unit and integration tests located in /tests directory.
 - `npm run start`: Compile the .ts source files and run the project by invoking the compiled source files.
 - `npm run fmt`: Format the source code using the rules defined in .prettierrc.
-- `npm run migration:create`: Create a migration file based on the entities you have created. A migration file with current timestamp will be created inside the /src/database/sql/migrations directory.
-- `npm run migration:up`: Migrate the database schema. This will apply all newly created migrations.
-- `npm run migration:down`: Undo the last run migration.
-- `npm run migration:fresh`: Reset the database schema (data will be lost).
+- `npm run lint`: Lint the source code using the rules defined in .eslintrc.json.
 
 ### 🐳 Docker:
 
