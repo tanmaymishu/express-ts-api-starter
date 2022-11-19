@@ -1,15 +1,16 @@
-import { Options } from '@mikro-orm/postgresql';
-import dotenv from 'dotenv';
+import { Options } from '@mikro-orm/postgresql'
+import dotenv from 'dotenv'
+import path from 'path'
 
-if (process.env.NODE_ENV == 'test') {
-  dotenv.config({ path: '.env.test' });
+if (process.env.NODE_ENV === 'test') {
+  dotenv.config({ path: '.env.test' })
 } else {
-  dotenv.config({ path: '.env' });
+  dotenv.config({ path: '.env' })
 }
 
 const config: Options = {
-  entities: [__dirname + '/database/sql/entities'], // path to our JS entities (dist), relative to `baseDir`
-  entitiesTs: [__dirname + '/database/sql/entities'], // path to our TS entities (src), relative to `baseDir`
+  entities: [path.join(__dirname, '/database/sql/entities')], // path to our JS entities (dist), relative to `baseDir`
+  entitiesTs: [path.join(__dirname, '/database/sql/entities')], // path to our TS entities (src), relative to `baseDir`
   host: process.env.DB_HOST,
   dbName: process.env.DB_DATABASE,
   user: process.env.DB_USERNAME,
@@ -18,8 +19,8 @@ const config: Options = {
   type: 'postgresql', // one of `mongo` | `mysql` | `mariadb` | `postgresql` | `sqlite`
   migrations: {
     tableName: 'migrations', // name of database table with log of executed transactions
-    path: __dirname + '/database/sql/migrations', // path to the folder with migrations
-    pathTs: __dirname + '/database/sql/migrations', // path to the folder with TS migrations (if used, we should put path to compiled files in `path`)
+    path: path.join(__dirname, '/database/sql/migrations'), // path to the folder with migrations
+    pathTs: path.join(__dirname, '/database/sql/migrations'), // path to the folder with TS migrations (if used, we should put path to compiled files in `path`)
     glob: '!(*.d).{js,ts}', // how to match migration files (all .js and .ts files, but not .d.ts)
     transactional: true, // wrap each migration in a transaction
     disableForeignKeys: true, // wrap statements with `set foreign_key_checks = 0` or equivalent
@@ -30,13 +31,13 @@ const config: Options = {
     emit: 'ts' // migration generation mode
     // generator: TSMigrationGenerator // migration generator, e.g. to allow custom formatting
   }
-};
+}
 
-export default config;
+export default config
 
-export function withConfig(options: Partial<Options>): Options {
+export function withConfig (options: Partial<Options>): Options {
   return {
     ...config,
     ...options
-  };
+  }
 }

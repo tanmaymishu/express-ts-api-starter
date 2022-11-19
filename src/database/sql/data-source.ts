@@ -1,13 +1,13 @@
-import { PostgreSqlDriver } from '@mikro-orm/postgresql';
-import { MikroORM } from '@mikro-orm/core';
-import config from '@/mikro-orm.config';
-import Container from 'typedi';
+import { PostgreSqlDriver } from '@mikro-orm/postgresql'
+import { MikroORM } from '@mikro-orm/core'
+import config from '@/mikro-orm.config'
+import Container from 'typedi'
 
-export default async function orm(): Promise<MikroORM> {
+export default async function orm (): Promise<MikroORM> {
   if (Container.has(MikroORM)) {
-    return Container.get(MikroORM);
+    return Container.get(MikroORM)
   }
-  let ormInstance = await MikroORM.init<PostgreSqlDriver>(config);
-  Container.set(MikroORM, ormInstance);
-  return ormInstance;
+  const ormInstance = await MikroORM.init<PostgreSqlDriver>(config)
+  Container.set(MikroORM, ormInstance)
+  return ormInstance
 }

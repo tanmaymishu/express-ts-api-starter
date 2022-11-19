@@ -1,27 +1,27 @@
-import { Entity, Property, PrimaryKey } from '@mikro-orm/core';
+import { Entity, Property, PrimaryKey } from '@mikro-orm/core'
 
 @Entity({ tableName: 'users' })
 export class User {
   @PrimaryKey()
-  id!: number;
+    id!: number
 
   @Property()
-  firstName!: string;
+    firstName!: string
 
   @Property()
-  lastName!: string;
+    lastName!: string
 
   @Property({
     unique: true
   })
-  email!: string;
+    email!: string
 
   @Property()
-  password!: string;
+    password!: string
 
   @Property()
-  createdAt: Date = new Date();
+    createdAt: Date = new Date()
 
   @Property({ onUpdate: () => new Date() })
-  updatedAt: Date = new Date();
+    updatedAt: Date = new Date()
 }

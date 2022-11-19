@@ -1,12 +1,11 @@
-import Container from 'typedi';
-import ServiceProvider from './service-provider';
+import ServiceProvider from './service-provider'
 
 export default class AppServiceProvider implements ServiceProvider {
-  register() {
+  register () {
     // TODO: Implement Method
   }
 
-  boot() {
+  boot () {
     // TODO: Implement Method
   }
 }

@@ -1,47 +1,48 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core';
-import { User } from '../database/sql/entities/user.entity';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { Request } from 'express';
-import { Service, Container } from 'typedi';
+import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { User } from '../database/sql/entities/user.entity'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import { Request } from 'express'
+import { Service } from 'typedi'
 @Service()
 export default class AuthService {
-  constructor(private readonly orm: MikroORM) {}
+  constructor (private readonly orm: MikroORM) {}
 
   @UseRequestContext()
-  async findBy(criteria: Record<string, string>) {}
+  async findBy (criteria: Record<string, string>) {}
+
   @UseRequestContext()
-  async createUser(body: any) {
-    let em = this.orm.em;
-    let user = new User();
-    user.firstName = body.firstName;
-    user.lastName = body.lastName;
-    user.email = body.email;
-    user.password = bcrypt.hashSync(body.password, 10);
-    em.persistAndFlush(user);
+  async createUser (body: any) {
+    const em = this.orm.em
+    const user = new User()
+    user.firstName = body.firstName
+    user.lastName = body.lastName
+    user.email = body.email
+    user.password = bcrypt.hashSync(body.password, 10)
+    await em.persistAndFlush(user)
     return {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
       token: this.generateJwt(user)
-    };
+    }
   }
 
-  async register(req: Request) {
-    const user = await this.createUser(req.body);
+  async register (req: Request) {
+    const user = await this.createUser(req.body)
 
     // mailQueue.add(SendWelcomeEmail.jobName, user);
 
-    return user;
+    return user
   }
 
   @UseRequestContext()
-  async login(req: Request) {
-    let em = this.orm.em;
-    const user = await em.findOne(User, { email: req.body.email });
+  async login (req: Request) {
+    const em = this.orm.em
+    const user = await em.findOne(User, { email: req.body.email })
 
-    if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
-      throw new Error('User not found');
+    if (user == null || !bcrypt.compareSync(req.body.password, user.password)) {
+      throw new Error('User not found')
     }
 
     return {
@@ -49,12 +50,12 @@ export default class AuthService {
       lastName: user.lastName,
       email: user.email,
       token: this.generateJwt(user)
-    };
+    }
   }
 
-  generateJwt(user: User) {
-    if (!process.env.JWT_SECRET) {
-      throw new Error('JWT secret not set');
+  generateJwt (user: User) {
+    if (process.env.JWT_SECRET === undefined) {
+      throw new Error('JWT secret not set')
     }
     return jwt.sign(
       {
@@ -67,6 +68,6 @@ export default class AuthService {
       {
         expiresIn: '7d'
       }
-    );
+    )
   }
 }

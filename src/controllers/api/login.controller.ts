@@ -1,31 +1,33 @@
-import { Request, Response } from 'express';
-import { body } from 'express-validator';
-import { Controller, Post, Req, Res, UseBefore } from 'routing-controllers';
-import { Service } from 'typedi';
-import validate from '@/middleware/validation.middleware';
-import AuthService from '@/services/auth.service';
+import { Request, Response } from 'express'
+import { body } from 'express-validator'
+import { Controller, Post, Req, Res, UseBefore } from 'routing-controllers'
+import { Service } from 'typedi'
+import validate from '@/middleware/validation.middleware'
+import AuthService from '@/services/auth.service'
+import logger from '@/util/logger'
 
 @Controller('/api/v1')
 @Service()
 export class LoginController {
-  constructor(public authService: AuthService) {}
+  constructor (public authService: AuthService) {}
 
-  static rules = [body('email').exists(), body('password').exists()];
+  static rules = [body('email').exists(), body('password').exists()]
 
   @Post('/login')
   @UseBefore(validate(LoginController.rules))
-  async store(@Req() req: Request, @Res() res: Response) {
-    return this.authService
+  async store (@Req() req: Request, @Res() res: Response) {
+    return await this.authService
       .login(req)
       .then((user) => {
         res.cookie('jwt', user.token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === 'production' // Should be true on production
-        });
-        return res.json({ user });
+        })
+        return res.json({ user })
       })
       .catch((err) => {
-        return res.status(422).json({ message: 'Invalid username or password' });
-      });
+        logger.info(err.message)
+        return res.status(422).json({ message: 'Invalid username or password' })
+      })
   }
 }
