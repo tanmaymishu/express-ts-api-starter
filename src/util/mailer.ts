@@ -1,22 +1,14 @@
-import nodemailer, { TransportOptions } from 'nodemailer';
+import SMTPTransport from 'nodemailer/lib/smtp-transport'
+import nodemailer from 'nodemailer'
 
-//======== Uncomment this on production ==========
-/*
-const transporter = nodemailer.createTransport({
-  host: process.env.MAIL_HOST,
-  port: process.env.MAIL_PORT,
-  auth: {
-    user: process.env.MAIL_USERNAME,
-    pass: process.env.MAIL_PASSWORD
-  }
-} as TransportOptions);
-*/
-const transporter = nodemailer.createTransport({
-  host: process.env.MAIL_HOST,
-  port: process.env.MAIL_PORT,
-  auth: {
-    user: process.env.MAIL_USERNAME,
-    pass: process.env.MAIL_PASSWORD
-  }
-} as TransportOptions);
-export { transporter };
+const transporter = nodemailer.createTransport(
+  new SMTPTransport({
+    host: process.env.MAIL_HOST,
+    port: parseInt(process.env.MAIL_PORT as string),
+    auth: {
+      user: process.env.MAIL_USERNAME,
+      pass: process.env.MAIL_PASSWORD
+    }
+  })
+)
+export { transporter }

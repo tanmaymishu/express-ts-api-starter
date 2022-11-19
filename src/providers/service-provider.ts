@@ -1,4 +1,4 @@
-export default class ServiceProvider {
-  register() {}
-  boot() {}
-}
+export default interface ServiceProvider {
+  register: () => void
+  boot: () => void
+};;;;;;;;;;

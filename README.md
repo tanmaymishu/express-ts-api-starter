@@ -8,7 +8,7 @@
 
 - Good ol' [Express](https://expressjs.com/).
 - Type-safety ([TypeScript](https://www.typescriptlang.org/)).
-- ORM with schema migration ([TypeORM](https://typeorm.io/)).
+- ORM with schema migration ([MikroORM](https://mikro-orm.io/)).
 - Session-based and Token-based Authentication ([Passport](http://www.passportjs.org/)).
 - Logging ([Winston](https://github.com/winstonjs/winston) + [Morgan](https://github.com/expressjs/morgan)).
 - Testing ([Supertest](https://github.com/visionmedia/supertest) + [Jest](https://jestjs.io/)).
@@ -33,11 +33,10 @@
 - `npm run test`: Run all the unit and integration tests located in /tests directory.
 - `npm run start`: Compile the .ts source files and run the project by invoking the compiled source files.
 - `npm run fmt`: Format the source code using the rules defined in .prettierrc.
-- `npm run entity:make`: Create a migration file. Ex: `npm run entity:make Post`. An entity file will be created inside the /src/database/sql/entities directory.
-- `npm run migrate:make`: Create a migration file. Ex: `npm run migrate:make CreatePostsTable`. A migration file with current timestamp will be created inside the /src/database/sql/migrations directory.
-- `npm run migrate`: Migrate the database schema. This will apply all newly created migrations.
-- `npm run migrate:rollback`: Undo the last run migration.
-- To run more migration or seed-specific commands, consider installing the knex cli globally. [Learn more](https://knexjs.org/#Migrations-CLI).
+- `npm run migration:create`: Create a migration file based on the entities you have created. A migration file with current timestamp will be created inside the /src/database/sql/migrations directory.
+- `npm run migration:up`: Migrate the database schema. This will apply all newly created migrations.
+- `npm run migration:down`: Undo the last run migration.
+- `npm run migration:fresh`: Reset the database schema (data will be lost).
 
 ### 🐳 Docker:
 
